@@ -2,17 +2,36 @@
 
 from fastapi import APIRouter, Depends
 
-# from structlog import get_logger
+from structlog import get_logger
+from app.schemas.response import SuccessResponse
 
 # from app.dal.referral import ReferralDAL
 # from app.dependencies import get_referral_dal
-# from app.schemas.applied_referral import AppliedReferral
+from app.schemas.organisation import OrganisationResponse
+
 # from app.schemas.referral import ApplyReferralCodeRequest, UserInfoResponse
-# from app.schemas.response import SuccessResponse
-# from app.services import referral as ReferralService
+from app.services.organisation import Organisation
 
 router = APIRouter()
-# logger = get_logger()
+logger = get_logger()
+OrganisationService = Organisation()
+
+
+@router.post(
+    "/organisation", response_model=SuccessResponse[OrganisationResponse]
+)
+async def create_organisation(
+    user_id: str, payload: createOrganisationRequest
+):
+    """_summary_
+
+    Args:
+        user_id (str): _description_
+        payload (createOrganisationRequest): _description_
+    """
+
+    response_data = await OrganisationService.create_organisation()
+    return SuccessResponse[OrganisationResponse](data=response_data)
 
 
 # @router.get(
