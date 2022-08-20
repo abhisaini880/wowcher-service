@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.apis.v1 import organisation
+from apis.v1 import organisation
 
 router = APIRouter()
 router.include_router(

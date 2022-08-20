@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 from pydantic import PostgresDsn
 
@@ -19,7 +20,12 @@ SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
 
 engine = create_async_engine(SQLALCHEMY_DATABASE_URL, future=True, echo=True)
 async_session = sessionmaker(
-    engine, autocommit=True, expire_on_commit=False, class_=AsyncSession
+    engine, autocommit=False, expire_on_commit=False, class_=AsyncSession
 )
 
 Base = declarative_base()
+
+# engine = create_engine(SQLALCHEMY_DATABASE_URL)
+# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Base = declarative_base()

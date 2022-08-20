@@ -9,6 +9,8 @@ import uvicorn
 from models import organisation
 from core.config import settings
 from databases.mysql import engine, Base
+from apis.health import status_router
+from routes import routes_v1
 
 # from models import organisation
 
@@ -42,8 +44,8 @@ def create_app():
     # )
     # # _app.add_middleware(RawContextMiddleware)
 
-    # _app.include_router(status_router)
-    # _app.include_router(v1_router, prefix="/v1", tags=["v1"])
+    _app.include_router(status_router)
+    _app.include_router(routes_v1.router, prefix="/v1", tags=["v1"])
 
     return _app
 
@@ -55,16 +57,8 @@ app = create_app()
 async def startup():
     # create db tables
     async with engine.begin() as conn:
-        # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-
-# TODO:
-# 1. services can be called from api or can be executed as a single entity
-# 2. DAO layer is between service and database
-# 3. apis will have diffenent versions
-# 4. models will have table schema
-# 5. Database connection and middlewares
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -4,7 +4,7 @@ from typing import Any, Optional
 from fastapi import status
 from structlog import get_logger
 
-from app.schemas.response import ErrorResponse
+from schemas.response import ErrorResponse
 
 logger = get_logger()
 
@@ -13,14 +13,12 @@ CUSTOM_CODE_PREFIX = "REF-"
 
 class _CustomExceptionCodes(int, Enum):
     # * generic errors
-    DatabaseException = 101
-    CustomRequestValidationException = 102
-    CustomHTTPException = 190
-    InternalServerErrorException = 199
-    # * referral code errors
-    UserAlreadyReferredException = 201
-    InvalidAppliedReferrerCodeException = 202
-    ReferralCodeGenerationLimitExceededException = 203
+    DatabaseException = 1001
+    CustomRequestValidationException = 1002
+    CustomHTTPException = 1003
+    InternalServerErrorException = 1999
+    # * Organisation code errors
+
     # * sf sync errors
     InvalidSfSyncType = 211
     ViceVersaCodeAppliedException = 204

@@ -8,8 +8,8 @@ from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from structlog import get_logger
 
-from app.exceptions.base import CustomException
-from app.exceptions.generic import (
+from core.exceptions.base import CustomException
+from generic import (
     CustomHTTPException,
     CustomRequestValidationException,
     InternalServerErrorException,

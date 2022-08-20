@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import status
 
-from app.exceptions.base import CustomException
+from base import CustomException
 
 
 class UserAccountServiceException(CustomException):

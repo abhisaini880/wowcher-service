@@ -6,7 +6,7 @@ from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from structlog import get_logger
 
-from app.exceptions.base import CustomException
+from core.exceptions.base import CustomException
 
 logger = get_logger()
 
@@ -19,7 +19,7 @@ class DatabaseException(CustomException):
     """
     Trigger when anything related to database..
     will be included in db connections files
-    * CustomCode = 101
+    * CustomCode = 1001
     """
 
     def __init__(self) -> None:
@@ -30,7 +30,7 @@ class DatabaseException(CustomException):
 class CustomRequestValidationException(CustomException):
     """
     will trigger when any request pydantic validation fails
-    * CustomCode = 102
+    * CustomCode = 1002
     """
 
     def __init__(
@@ -46,7 +46,7 @@ class CustomRequestValidationException(CustomException):
 class CustomHTTPException(CustomException):
     """
     catch fastapi/starlette http exceptions like 404
-    * CustomCode = 198
+    * CustomCode = 1003
     """
 
     def __init__(self, exc: StarletteHTTPException) -> None:
@@ -59,7 +59,7 @@ class CustomHTTPException(CustomException):
 class InternalServerErrorException(CustomException):
     """
     catch all uncaught exceptions
-    * CustomCode = 199
+    * CustomCode = 1999
     """
 
     def __init__(self) -> None:

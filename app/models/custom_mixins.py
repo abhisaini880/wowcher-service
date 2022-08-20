@@ -1,6 +1,6 @@
 from datetime import datetime
-from sqlalchemy import Column, DateTime, String
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy import Column, DateTime, BINARY
+from utils.utils import BinaryUUID
 
 
 def default_time():
@@ -22,5 +22,5 @@ class DateTimeMixin:
 
 
 class UserMixin:
-    created_by = Column(String(100), nullable=False)
-    updated_by = Column(String(100), nullable=False)
+    created_by = Column(BinaryUUID, nullable=False)
+    updated_by = Column(BinaryUUID, nullable=False)

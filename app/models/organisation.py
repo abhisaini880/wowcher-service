@@ -1,8 +1,12 @@
+from email.policy import default
 from typing import Text
 from sqlalchemy import Column, String, BINARY, JSON, TEXT
 
 from databases.mysql import Base
 from models.custom_mixins import DateTimeMixin, UserMixin
+
+from utils.utils import BinaryUUID
+from uuid import uuid4
 
 # Base = declarative_base(cls=Base)
 
@@ -10,11 +14,10 @@ from models.custom_mixins import DateTimeMixin, UserMixin
 class OrganisationDb(Base, DateTimeMixin, UserMixin):
     __tablename__ = "organisations"
 
-    org_id = Column(BINARY, primary_key=True)
+    org_id = Column(BinaryUUID, primary_key=True, default=uuid4)
     org_name = Column(String(100), nullable=False)
-    logo_url = Column(TEXT, nullable=True)
+    org_meta = Column(JSON, nullable=True)
     theme = Column(JSON, nullable=True)
-    test = Column(String(10))
 
     def __repr__(self):
         return "Organisation: ({!r})".format(self.__dict__)
