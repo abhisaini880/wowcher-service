@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, DateTime, BINARY
-from utils.utils import BinaryUUID
+from utils.models import BinaryUUID
 
 
 def default_time():

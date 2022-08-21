@@ -1,14 +1,12 @@
-from email.policy import default
-from typing import Text
+""" models for organisation """
+
 from sqlalchemy import Column, String, BINARY, JSON, TEXT
 
 from databases.mysql import Base
 from models.custom_mixins import DateTimeMixin, UserMixin
 
-from utils.utils import BinaryUUID
+from utils.models import BinaryUUID
 from uuid import uuid4
-
-# Base = declarative_base(cls=Base)
 
 
 class OrganisationDb(Base, DateTimeMixin, UserMixin):

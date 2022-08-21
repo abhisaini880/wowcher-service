@@ -2,14 +2,9 @@
 
 
 # from dependecy.db_session import get_db_session
-from urllib import response
 from sqlalchemy.orm import Session
-from fastapi import Depends
 from models.organisation import OrganisationDb
 from sqlalchemy.future import select
-from sqlalchemy import event, text
-import json
-from schemas.organisation import OrganisationResponse
 from fastapi.encoders import jsonable_encoder
 
 
@@ -35,7 +30,7 @@ class OrganisationDAO:
 
         return response
 
-    async def create_organisation(self, data):
+    async def create_organisation(self, data: OrganisationDb):
         """_summary_
 
         Args:

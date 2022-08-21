@@ -8,7 +8,7 @@ from schemas.response import ErrorResponse
 
 logger = get_logger()
 
-CUSTOM_CODE_PREFIX = "REF-"
+CUSTOM_CODE_PREFIX = "WOW-"
 
 
 class _CustomExceptionCodes(int, Enum):

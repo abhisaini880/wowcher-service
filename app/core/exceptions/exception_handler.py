@@ -9,7 +9,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from structlog import get_logger
 
 from core.exceptions.base import CustomException
-from generic import (
+from core.exceptions.generic import (
     CustomHTTPException,
     CustomRequestValidationException,
     InternalServerErrorException,

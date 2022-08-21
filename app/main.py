@@ -5,12 +5,22 @@ from fastapi import Depends, FastAPI, HTTPException, Request, Response
 # from sqlalchemy.orm import Session
 
 import uvicorn
-
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
 from models import organisation
 from core.config import settings
 from databases.mysql import engine, Base
 from apis.health import status_router
 from routes import routes_v1
+from core.exceptions.base import CustomException
+from core.exceptions.exception_handler import (
+    custom_exception_handler,
+    generic_exception_handler,
+    http_exception_handler,
+    pydantic_validation_exception_handler,
+    request_validation_exception_handler,
+)
 
 # from models import organisation
 
@@ -58,6 +68,17 @@ async def startup():
     # create db tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+
+app.add_exception_handler(
+    RequestValidationError, request_validation_exception_handler
+)
+app.add_exception_handler(
+    ValidationError, pydantic_validation_exception_handler
+)
+app.add_exception_handler(StarletteHTTPException, http_exception_handler)
+app.add_exception_handler(CustomException, custom_exception_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
 
 
 if __name__ == "__main__":
