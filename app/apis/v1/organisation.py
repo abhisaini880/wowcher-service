@@ -34,9 +34,7 @@ async def get_organisation(
         org_id=org_id, organisation_dal=organisation_dal
     )
 
-    return SuccessResponse(
-        data=response_data, code="0000", message="fetched !"
-    )
+    return SuccessResponse(data=response_data)
 
 
 @router.post(
@@ -55,6 +53,4 @@ async def create_organisation(
         payload=payload, organisation_dal=organisation_dal
     )
     print(response_data)
-    return SuccessResponse(
-        data=response_data, code="W123", message="Created !"
-    )
+    return SuccessResponse(data=response_data)

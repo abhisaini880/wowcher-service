@@ -157,9 +157,11 @@ async def register_user(payload, user_dal):
 
     parsed_user_data = UserDb(
         email_id=payload.email_id,
-        user_name=payload.user_name,
+        name=payload.name,
         hashed_pwd=hashed_pwd,
         active=True,
+        created_by=settings.SYSTEM_USER_ID,
+        updated_by=settings.SYSTEM_USER_ID,
     )
 
     # call user service method `create_user`

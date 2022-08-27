@@ -19,7 +19,7 @@ class OrganisationDAO:
             session (Session, optional): _description_. Defaults to Depends(get_db_session).
         """
 
-        query = select(OrganisationDb).where(OrganisationDb.org_id == org_id)
+        query = select(OrganisationDb).where(OrganisationDb.id == org_id)
         query_response = await self.db_session.execute(query)
 
         response = []
@@ -40,7 +40,10 @@ class OrganisationDAO:
             _type_: _description_
         """
         db_data = OrganisationDb(
-            org_name=data.org_name, org_meta=jsonable_encoder(data.org_meta)
+            name=data.name,
+            meta=jsonable_encoder(data.meta),
+            created_by=data.created_by,
+            updated_by=data.updated_by,
         )
 
         self.db_session.add(db_data)

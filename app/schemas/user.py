@@ -3,7 +3,7 @@ from typing import Union
 
 
 class User(BaseModel):
-    user_name: str
+    name: str
     email_id: Union[str, None] = None
     active: Union[bool, None] = None
 
@@ -13,4 +13,4 @@ class UserRegisterRequest(User):
 
 
 class UserRegisterResponse(User):
-    user_id: str
+    id: str

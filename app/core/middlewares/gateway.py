@@ -15,6 +15,7 @@ from app.DAL.users import UserDAO
 
 from app.services import user as UserService
 from app.services import gateway as GatewayService
+from app.core.config import settings
 
 
 router = APIRouter()
@@ -44,9 +45,7 @@ async def login(
         payload=form_data, user_dal=user_dal
     )
 
-    return SuccessResponse(
-        data=response_data, code="WOW-0000", message="User Authenticated !"
-    )
+    return SuccessResponse(data=response_data)
 
 
 @router.post(
@@ -71,6 +70,4 @@ async def register_user(
         payload=payload, user_dal=user_dal
     )
 
-    return SuccessResponse(
-        data=response_data, code="WOW-0000", message="User created !"
-    )
+    return SuccessResponse(data=response_data)
