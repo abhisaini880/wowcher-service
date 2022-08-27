@@ -1,9 +1,9 @@
 """ Data access objects of organisations Model"""
 
 
-# from dependecy.db_session import get_db_session
+# from .dependency.db_session import get_db_session
 from sqlalchemy.orm import Session
-from models.organisation import OrganisationDb
+from app.models.organisation import OrganisationDb
 from sqlalchemy.future import select
 from fastapi.encoders import jsonable_encoder
 

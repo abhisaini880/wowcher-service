@@ -3,16 +3,16 @@
 from fastapi import APIRouter, Depends, status
 
 from structlog import get_logger
-from schemas.response import SuccessResponse
+from app.schemas.response import SuccessResponse
 
-from dependecy.db_session import get_organisation_dal
-from schemas.organisation import OrganisationResponse, OrganisationRequest
+from app.dependency.db_session import get_organisation_dal
+from app.schemas.organisation import OrganisationResponse, OrganisationRequest
 
-from services import organisation as OrganisationService
-from DAL.organisations import OrganisationDAO
+from app.services import organisation as OrganisationService
+from app.DAL.organisations import OrganisationDAO
 
-from services.gateway import get_current_active_user
-from models.user import UserDb
+from app.services.gateway import get_current_active_user
+from app.models.user import UserDb
 
 router = APIRouter()
 logger = get_logger()

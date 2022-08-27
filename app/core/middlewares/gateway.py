@@ -5,16 +5,16 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, status
 
 from structlog import get_logger
-from schemas.response import SuccessResponse
-from schemas.gateway import Token
-from schemas.user import UserRegisterRequest, UserRegisterResponse
+from app.schemas.response import SuccessResponse
+from app.schemas.gateway import Token
+from app.schemas.user import UserRegisterRequest, UserRegisterResponse
 
-from dependecy.db_session import get_user_dal
+from app.dependency.db_session import get_user_dal
 
-from DAL.users import UserDAO
+from app.DAL.users import UserDAO
 
-from services import user as UserService
-from services import gateway as GatewayService
+from app.services import user as UserService
+from app.services import gateway as GatewayService
 
 
 router = APIRouter()

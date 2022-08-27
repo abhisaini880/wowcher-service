@@ -6,7 +6,7 @@ from pydantic import ValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from structlog import get_logger
 
-from core.exceptions.base import CustomException
+from .base import CustomException
 
 logger = get_logger()
 

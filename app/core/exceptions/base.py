@@ -4,7 +4,7 @@ from typing import Any, Optional
 from fastapi import status
 from structlog import get_logger
 
-from schemas.response import ErrorResponse
+from app.schemas.response import ErrorResponse
 
 logger = get_logger()
 

@@ -6,14 +6,14 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from fastapi import status, Depends
 from typing import Union
-from DAL.users import UserDAO
-from models.user import UserDb
-from schemas.gateway import TokenData
-from services import user as UserService
+from app.DAL.users import UserDAO
+from app.models.user import UserDb
+from app.schemas.gateway import TokenData
+from . import user as UserService
 from fastapi.exceptions import HTTPException
-from dependecy.db_session import get_user_dal
+from app.dependency.db_session import get_user_dal
 
-from core.config import settings
+from app.core.config import settings
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

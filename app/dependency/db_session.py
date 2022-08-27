@@ -1,11 +1,11 @@
 from sqlalchemy import exc
 from structlog import get_logger
 
-from databases.mysql import async_session
-from core.exceptions.generic import DatabaseException
+from app.databases.mysql import async_session
+from app.core.exceptions.generic import DatabaseException
 
-from DAL.organisations import OrganisationDAO
-from DAL.users import UserDAO
+from app.DAL.organisations import OrganisationDAO
+from app.DAL.users import UserDAO
 
 logger = get_logger()
 

@@ -1,6 +1,7 @@
 from functools import lru_cache
+from typing import List, Literal, Union
 
-from pydantic import BaseSettings
+from pydantic import BaseSettings, AnyHttpUrl
 
 
 class Settings(BaseSettings):
@@ -14,6 +15,7 @@ class Settings(BaseSettings):
     SYSTEM_USER_ID: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     REFRESH_TOKEN_EXPIRE_MINUTES: int
+    BACKEND_CORS_ORIGINS: List[Union[AnyHttpUrl, Literal["*"]]]
 
     class Config:
         env_file = ".env"
