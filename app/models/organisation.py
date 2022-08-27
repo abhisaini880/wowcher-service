@@ -2,10 +2,10 @@
 
 from sqlalchemy import Column, String, BINARY, JSON, TEXT
 
-from databases.mysql import Base
-from models.custom_mixins import DateTimeMixin, UserMixin
+from app.databases.mysql import Base
+from app.models.custom_mixins import DateTimeMixin, UserMixin
 
-from utils.models import BinaryUUID
+from app.utils.models import BinaryUUID
 from uuid import uuid4
 
 

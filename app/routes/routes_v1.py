@@ -2,9 +2,9 @@
 
 from fastapi import APIRouter
 
-from apis.v1 import organisation
+from app.apis.v1 import organisation
 
-from core.middlewares import gateway
+from app.core.middlewares import gateway
 
 router = APIRouter()
 router.include_router(

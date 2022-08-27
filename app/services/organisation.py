@@ -1,5 +1,5 @@
 """ Organisation service """
-from DAL.organisations import OrganisationDAO
+from app.DAL.organisations import OrganisationDAO
 
 
 async def get_organisations(org_id: str, organisation_dal: OrganisationDAO):
@@ -12,4 +12,4 @@ async def create_organisation(payload, organisation_dal: OrganisationDAO):
 
 
 async def update_oragnisation():
-    ...
+    pass
