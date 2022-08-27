@@ -18,7 +18,7 @@ class UserDAO:
             session (Session, optional): _description_. Defaults to Depends(get_db_session).
         """
 
-        query = select(UserDb).where(UserDb.user_id == user_id)
+        query = select(UserDb).where(UserDb.id == user_id)
         query_response = await self.db_session.execute(query)
 
         response = []
@@ -58,12 +58,12 @@ class UserDAO:
         """
 
         db_data = UserDb(
-            user_name=data.get("user_name"),
-            email_id=data.get("email_id"),
-            hashed_pwd=data.get("hashed_pwd"),
-            active=data.get("active"),
-            created_by=data.get("created_by", settings.SYSTEM_USER_ID),
-            updated_by=data.get("updated_by", settings.SYSTEM_USER_ID),
+            name=data.name,
+            email_id=data.email_id,
+            hashed_pwd=data.hashed_pwd,
+            active=data.active,
+            created_by=data.created_by,
+            updated_by=data.updated_by,
         )
 
         self.db_session.add(db_data)

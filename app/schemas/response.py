@@ -8,7 +8,7 @@ DEFAULT_ERR_MESSAGE = "Oops !! This shouldn't have happened. Please try again."
 
 
 class BaseResponse(GenericModel, Generic[DataT]):
-    code: Optional[str]
+    code: Optional[str] = None
     message: Optional[str]
     data: Optional[DataT] = None
 
@@ -19,7 +19,7 @@ class BaseResponse(GenericModel, Generic[DataT]):
 
 
 class SuccessResponse(BaseResponse[DataT], Generic[DataT]):
-    message: Optional[str]
+    message: Optional[str] = None
     data: DataT
 
 

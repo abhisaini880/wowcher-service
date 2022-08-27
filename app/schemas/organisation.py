@@ -10,14 +10,14 @@ class OrganisationMeta(BaseModel):
 
 
 class OrganisationResponse(BaseModel):
-    org_id: str
-    org_name: str
-    org_meta: OrganisationMeta
+    id: str
+    name: str
+    meta: OrganisationMeta
 
     class Config:
         orm_mode = True
 
 
 class OrganisationRequest(BaseModel):
-    org_name: str
-    org_meta: OrganisationMeta
+    name: str
+    meta: OrganisationMeta
