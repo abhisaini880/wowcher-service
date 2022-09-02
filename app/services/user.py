@@ -1,6 +1,6 @@
 """ User Services """
 
-""" Organisation service """
+""" Organization service """
 from app.DAL.users import UserDAO
 from fastapi import Depends
 from app.models.user import UserDb

@@ -4,18 +4,18 @@ from structlog import get_logger
 from app.databases.mysql import async_session
 from app.core.exceptions.generic import DatabaseException
 
-from app.DAL.organisations import OrganisationDAO
+from app.DAL.organizations import OrganizationDAO
 from app.DAL.users import UserDAO
 
 logger = get_logger()
 
 
-async def get_organisation_dal():
+async def get_organization_dal():
     print("creating dependency")
     session = async_session()
     async with session.begin():
         try:
-            yield OrganisationDAO(session)
+            yield OrganizationDAO(session)
             await session.commit()
         except exc.SQLAlchemyError as err:
             logger.warning(f"MYSQL ERROR: {err}")

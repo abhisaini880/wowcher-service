@@ -23,20 +23,24 @@ def create_app():
     Returns:
         _type_: _description_
     """
-    _app = FastAPI(title="Wowcher-Service")
+    _app = FastAPI(
+        title="Wowcher-Service",
+        docs_url=None,
+        redoc_url="/api/documentation",
+    )
     allowed_origins = [str(origin) for origin in settings.BACKEND_CORS_ORIGINS]
 
     _app.add_middleware(
         CORSMiddleware,
         allow_origins=allowed_origins,
-        allow_credentials=True,
+        allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
     )
     # _app.add_middleware(RawContextMiddleware)
 
     _app.include_router(status_router)
-    _app.include_router(routes_v1.router, prefix="/v1", tags=["v1"])
+    _app.include_router(routes_v1.router, prefix="/v1")
 
     return _app
 
