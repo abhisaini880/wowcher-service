@@ -17,7 +17,7 @@ class _CustomExceptionCodes(int, Enum):
     CustomRequestValidationException = 1002
     CustomHTTPException = 1003
     InternalServerErrorException = 1999
-    # * Organisation code errors
+    # * Organization code errors
 
     # * sf sync errors
     InvalidSfSyncType = 211
