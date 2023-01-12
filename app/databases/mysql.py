@@ -1,13 +1,11 @@
+from urllib.parse import quote_plus as urlquote
+
+from pydantic import PostgresDsn
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from pydantic import PostgresDsn
-
-from urllib.parse import quote_plus as urlquote
-
 from app.core.config import settings
-
 
 SQLALCHEMY_DATABASE_URL = PostgresDsn.build(
     scheme="mysql+asyncmy",

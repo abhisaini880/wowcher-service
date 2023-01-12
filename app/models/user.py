@@ -1,12 +1,12 @@
 """ models for users """
 
-from sqlalchemy import Column, String, DateTime, BOOLEAN
+from uuid import uuid4
+
+from sqlalchemy import BOOLEAN, Column, DateTime, String
 
 from app.databases.mysql import Base
 from app.models.custom_mixins import DateTimeMixin, UserMixin
-
 from app.utils.models import BinaryUUID
-from uuid import uuid4
 
 
 class UserDb(Base, DateTimeMixin, UserMixin):

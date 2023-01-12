@@ -1,16 +1,18 @@
 """ Data access objects of organizations Model"""
 
 
+from fastapi.encoders import jsonable_encoder
+from sqlalchemy.future import select
+
 # from .dependency.db_session import get_db_session
 from sqlalchemy.orm import Session
+
 from app.models.organization import (
     OrganizationDb,
     OrganizationMemberDb,
     OrganizationTeamDb,
     TeamMemberDb,
 )
-from sqlalchemy.future import select
-from fastapi.encoders import jsonable_encoder
 
 
 class OrganizationDAO:
@@ -33,9 +35,59 @@ class OrganizationDAO:
             parsed_obj = jsonable_encoder(object)
             response.append(parsed_obj["OrganizationDb"])
 
+        ##################################
+        #################################
+        query = (
+            select(
+                OrganizationTeamDb.id,
+                OrganizationTeamDb.name,
+                OrganizationTeamDb.permissions,
+                OrganizationDb.id,
+            )
+            .join(OrganizationMemberDb.organization)
+            .join(OrganizationDb.teams)
+            .where(
+                OrganizationMemberDb.user_id
+                == "91c83a0f-9344-42e1-a3e1-048e2090b371"
+            )
+        )
+        query_response = await self.db_session.execute(query)
+
+        response_test = []
+        for object in query_response:
+            parsed_obj = jsonable_encoder(object)
+            print(parsed_obj)
+            response_test.append(parsed_obj)
+
+        print(response_test)
+
+        #############################################
+
         return response
 
-    async def create_organization(self, data: OrganizationDb):
+    async def get_organization_by_user_id(self, user_id: str):
+        """_summary_
+
+        Args:
+            user_id (str): _description_
+        """
+
+        query = (
+            select(OrganizationMemberDb)
+            .join(OrganizationMemberDb.team)
+            .where(OrganizationMemberDb.user_id == user_id)
+        )
+        query_response = await self.db_session.execute(query)
+
+        response = []
+
+        for object in query_response:
+            parsed_obj = jsonable_encoder(object)
+            response.append(parsed_obj["OrganizationMemberDb"])
+
+        return response
+
+    async def create_organization(self, data: OrganizationMemberDb):
         """_summary_
 
         Args:

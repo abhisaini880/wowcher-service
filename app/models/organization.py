@@ -1,13 +1,13 @@
 """ models for organization """
 
-from sqlalchemy import Column, String, JSON, ForeignKey, Boolean
+from uuid import uuid4
+
+from sqlalchemy import JSON, Boolean, Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 from app.databases.mysql import Base
 from app.models.custom_mixins import DateTimeMixin, UserMixin
-
 from app.utils.models import BinaryUUID
-from uuid import uuid4
 
 
 class OrganizationDb(Base, DateTimeMixin, UserMixin):
@@ -17,6 +17,11 @@ class OrganizationDb(Base, DateTimeMixin, UserMixin):
     name = Column(String(100), nullable=False)
     meta = Column(JSON, nullable=True)
     theme = Column(JSON, nullable=True)
+
+    members = relationship(
+        "OrganizationMemberDb", back_populates="organization"
+    )
+    teams = relationship("OrganizationTeamDb", back_populates="organization")
 
     def __repr__(self):
         return "Organization: ({!r})".format(self.__dict__)
@@ -30,6 +35,8 @@ class OrganizationTeamDb(Base, DateTimeMixin, UserMixin):
     organization_id = Column(BinaryUUID, ForeignKey("organizations.id"))
     permissions = Column(JSON)
 
+    organization = relationship("OrganizationDb", back_populates="teams")
+
     def __repr__(self):
         return "OrganizationTeam: ({!r})".format(self.__dict__)
 
@@ -42,6 +49,8 @@ class OrganizationMemberDb(Base, DateTimeMixin, UserMixin):
     )
     user_id = Column(BinaryUUID, ForeignKey("users.id"), primary_key=True)
     active = Column(Boolean, default=True)
+
+    organization = relationship("OrganizationDb", back_populates="members")
 
     def __repr__(self):
         return "OrganizationMember: ({!r})".format(self.__dict__)

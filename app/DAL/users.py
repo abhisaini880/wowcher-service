@@ -1,10 +1,11 @@
 """ Data access objects of users Model """
 
-from sqlalchemy.orm import Session
-from app.models.user import UserDb
-from sqlalchemy.future import select
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy.future import select
+from sqlalchemy.orm import Session
+
 from app.core.config import settings
+from app.models.user import UserDb
 
 
 class UserDAO:

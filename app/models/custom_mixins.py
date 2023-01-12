@@ -1,5 +1,7 @@
 from datetime import datetime
-from sqlalchemy import Column, DateTime, BINARY
+
+from sqlalchemy import BINARY, Column, DateTime
+
 from app.utils.models import BinaryUUID
 
 

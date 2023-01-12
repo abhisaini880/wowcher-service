@@ -1,33 +1,42 @@
 """ API Controller for organizations """
 
+# --- Standard library imports --- #
+# --- Related third party imports --- #
 from fastapi import APIRouter, Depends, status
-
 from structlog import get_logger
-from app.schemas.response import SuccessResponse
 
+from app.DAL.organizations import OrganizationDAO
+from app.dependency.auth import verify_user
 from app.dependency.db_session import get_organization_dal
+from app.models.user import UserDb
 from app.schemas.organization import (
-    OrganizationResponse,
-    OrganizationRequest,
-    OrganizationTeamRequest,
-    OrganizationTeamResponse,
     OrganizationMemberRequest,
     OrganizationMemberResponse,
+    OrganizationRequest,
+    OrganizationResponse,
+    OrganizationTeamRequest,
+    OrganizationTeamResponse,
 )
 
+# --- Local application/library specific imports --- #
+from app.schemas.response import Response
 from app.services import organization as OrganizationService
-from app.DAL.organizations import OrganizationDAO
-
+from app.services import user
 from app.services.gateway import get_current_active_user
-from app.models.user import UserDb
 
 router = APIRouter()
 logger = get_logger()
 
+responses = {
+    404: {"description": "Item not found"},
+    302: {"description": "The item was moved"},
+    403: {"description": "Not enough privileges"},
+}
+
 
 @router.get(
     "/{org_id}",
-    response_model=SuccessResponse[list[OrganizationResponse]],
+    response_model=Response[list[OrganizationResponse]],
     status_code=status.HTTP_200_OK,
 )
 async def get_organization(
@@ -35,7 +44,17 @@ async def get_organization(
     organization_dal: OrganizationDAO = Depends(get_organization_dal),
     current_user: UserDb = Depends(get_current_active_user),
 ):
-    """Get all referral info for user by id"""
+    """
+
+
+    Args:
+        org_id (str): _description_
+        organization_dal (OrganizationDAO, optional): _description_. Defaults to Depends(get_organization_dal).
+        current_user (UserDb, optional): _description_. Defaults to Depends(get_current_active_user).
+
+    Returns:
+        _type_: _description_
+    """
     logger.info(current_user)
     response_data = await OrganizationService.get_organizations(
         org_id=org_id, organization_dal=organization_dal
@@ -43,31 +62,76 @@ async def get_organization(
 
     print(response_data)
 
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)
 
 
 @router.post(
     "",
-    response_model=SuccessResponse[OrganizationResponse],
+    response_model=Response[OrganizationResponse],
+    responses={**responses, 201: {"data": {"id": "", "name": "", "meta": {}}}},
     status_code=status.HTTP_201_CREATED,
 )
 async def create_organization(
     payload: OrganizationRequest,
     organization_dal: OrganizationDAO = Depends(get_organization_dal),
-    current_user: UserDb = Depends(get_current_active_user),
+    # dependencies=[Depends(verify_user)],
 ):
-    """Get all referral info for user by id"""
-    print("inside create organization")
+    """
+    Create new organization
+
+    Args:
+        payload (OrganizationRequest): Organization meta data
+        organization_dal (OrganizationDAO, optional): organiation data access layer object. Defaults to Depends(get_organization_dal).
+        current_user (UserDb, optional): User requesting the API. Defaults to Depends(get_current_active_user).
+
+    Returns:
+        Response: Return created organization object
+    """
+
+    # Check if user has required permissions
+
     response_data = await OrganizationService.create_organization(
         payload=payload, organization_dal=organization_dal
     )
     print(response_data)
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)
+
+
+# @router.get(
+#     "",
+#     response_model=Response[OrganizationResponse],
+#     responses={**responses, 201: {"data": {"id": "", "name": "", "meta": {}}}},
+#     status_code=status.HTTP_201_CREATED,
+# )
+# async def get_organization_member(
+#     payload: OrganizationRequest,
+#     organization_dal: OrganizationDAO = Depends(get_organization_dal),
+#     dependencies=[Depends(verify_user)],
+# ):
+#     """
+#     Create new organization
+
+#     Args:
+#         payload (OrganizationRequest): Organization meta data
+#         organization_dal (OrganizationDAO, optional): organiation data access layer object. Defaults to Depends(get_organization_dal).
+#         current_user (UserDb, optional): User requesting the API. Defaults to Depends(get_current_active_user).
+
+#     Returns:
+#         Response: Return created organization object
+#     """
+
+#     # Check if user has required permissions
+
+#     response_data = await OrganizationService.create_organization(
+#         payload=payload, organization_dal=organization_dal
+#     )
+#     print(response_data)
+#     return Response(data=response_data)
 
 
 @router.get(
     "/{org_id}/teams",
-    response_model=SuccessResponse[list[OrganizationTeamResponse]],
+    response_model=Response[list[OrganizationTeamResponse]],
     status_code=status.HTTP_200_OK,
 )
 async def get_organization_teams(
@@ -83,12 +147,12 @@ async def get_organization_teams(
 
     print(response_data)
 
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)
 
 
 @router.post(
     "/teams",
-    response_model=SuccessResponse[OrganizationTeamResponse],
+    response_model=Response[OrganizationTeamResponse],
     status_code=status.HTTP_201_CREATED,
 )
 async def create_organization_team(
@@ -101,12 +165,12 @@ async def create_organization_team(
         payload=payload, organization_dal=organization_dal
     )
     print(response_data)
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)
 
 
 @router.get(
     "/{org_id}/members",
-    response_model=SuccessResponse[list[OrganizationMemberResponse]],
+    response_model=Response[list[OrganizationMemberResponse]],
     status_code=status.HTTP_200_OK,
 )
 async def get_organization_members(
@@ -122,12 +186,12 @@ async def get_organization_members(
 
     print(response_data)
 
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)
 
 
 @router.post(
     "/members",
-    response_model=SuccessResponse[OrganizationMemberResponse],
+    response_model=Response[OrganizationMemberResponse],
     status_code=status.HTTP_201_CREATED,
 )
 async def create_organization_member(
@@ -142,4 +206,4 @@ async def create_organization_member(
         current_user=current_user,
     )
     print(response_data)
-    return SuccessResponse(data=response_data)
+    return Response(data=response_data)

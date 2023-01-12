@@ -1,13 +1,15 @@
 """ Organization service """
+from typing import Union
+
+from app.core.config import settings
 from app.DAL.organizations import OrganizationDAO
 from app.DAL.users import UserDAO
 from app.models.organization import (
     OrganizationDb,
-    OrganizationTeamDb,
     OrganizationMemberDb,
+    OrganizationTeamDb,
     TeamMemberDb,
 )
-from app.core.config import settings
 
 
 async def get_organizations(org_id: str, organization_dal: OrganizationDAO):
@@ -56,11 +58,18 @@ async def create_organization_team(payload, organization_dal: OrganizationDAO):
 
 
 async def get_organization_members(
-    org_id: str, organization_dal: OrganizationDAO
+    organization_dal: OrganizationDAO,
+    org_id: Union[str, None] = None,
+    user_id: Union[str, None] = None,
 ):
     if org_id:
         return await organization_dal.get_members_by_organization_id(
             org_id=org_id
+        )
+
+    elif user_id:
+        return await organization_dal.get_organization_by_user_id(
+            user_id=user_id
         )
 
 
