@@ -10,6 +10,7 @@ from structlog import get_logger
 # --- Local application/library specific imports --- #
 from app.DAL.users import UserDAO
 from app.dependency.db_session import get_user_dal
+from app.models.user import UserDb
 from app.schemas.gateway import Token
 from app.schemas.response import Response
 from app.schemas.user import UserRegisterRequest, UserRegisterResponse
@@ -48,14 +49,16 @@ async def login(
     status_code=status.HTTP_201_CREATED,
 )
 async def register_user(
-    payload: UserRegisterRequest, user_dal: UserDAO = Depends(get_user_dal)
+    payload: UserRegisterRequest,
+    user_dal: UserDAO = Depends(get_user_dal),
+    current_user: UserDb = Depends(GatewayService.get_current_active_user),
 ):
     """
     Register new user in the system.
     """
-
+    logger.info(current_user)
     response_data = await GatewayService.register_user(
-        payload=payload, user_dal=user_dal
+        payload=payload, user_dal=user_dal, current_user=current_user
     )
 
     return Response(data=response_data)

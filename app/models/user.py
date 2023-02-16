@@ -6,13 +6,12 @@ from sqlalchemy import BOOLEAN, Column, DateTime, String
 
 from app.databases.mysql import Base
 from app.models.custom_mixins import DateTimeMixin, UserMixin
-from app.utils.models import BinaryUUID
 
 
 class UserDb(Base, DateTimeMixin, UserMixin):
     __tablename__ = "users"
 
-    id = Column(BinaryUUID, primary_key=True, default=uuid4)
+    id = Column(String(36), primary_key=True, default=uuid4)
     name = Column(String(100), nullable=False)
     email_id = Column(String(100), nullable=False)
     hashed_pwd = Column(String(150), nullable=False)

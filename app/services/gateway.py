@@ -143,15 +143,15 @@ async def login_user(payload, user_dal):
     }
 
 
-async def register_user(payload, user_dal):
-
+async def register_user(payload, user_dal, current_user):
+    current_user_id = current_user.get("id")
     # check if already exitss
     user_data = await UserService.get_user(
         email_id=payload.email_id, user_dal=user_dal
     )
 
     if user_data:
-        raise Exception
+        raise Exception("User Already Exists!")
 
     # create password hash
     hashed_pwd = get_password_hash(payload.password)
@@ -161,8 +161,8 @@ async def register_user(payload, user_dal):
         name=payload.name,
         hashed_pwd=hashed_pwd,
         active=True,
-        created_by=settings.SYSTEM_USER_ID,
-        updated_by=settings.SYSTEM_USER_ID,
+        created_by=current_user_id,
+        updated_by=current_user_id,
     )
 
     # call user service method `create_user`
