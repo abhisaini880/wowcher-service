@@ -1,29 +1,25 @@
 from typing import Any, Generic, Optional, TypeVar
 
+from pydantic import BaseModel, validator
 from pydantic.generics import GenericModel
 
 DataT = TypeVar("DataT")
 
-DEFAULT_ERR_MESSAGE = "Oops !! This shouldn't have happened. Please try again."
 
-
-class BaseResponse(GenericModel, Generic[DataT]):
-    code: Optional[str] = None
-    message: Optional[str]
-    data: Optional[DataT] = None
-
-    def dict(self, *args, **kwargs):
-        if kwargs and kwargs.get("exclude_none") is not None:
-            kwargs["exclude_none"] = True
-            return GenericModel.dict(self, *args, **kwargs)
-
-
-class SuccessResponse(BaseResponse[DataT], Generic[DataT]):
-    message: Optional[str] = None
-    data: DataT
-
-
-class ErrorResponse(BaseResponse[DataT], Generic[DataT]):
+class Error(BaseModel):
     code: str
-    message: str = DEFAULT_ERR_MESSAGE
-    details: Optional[Any]
+    message: Optional[str]
+
+
+class Response(GenericModel, Generic[DataT]):
+    data: Optional[DataT] = None
+    error: Optional[Error] = None
+    message: Optional[str] = None
+
+    @validator("error", always=True)
+    def check_consistency(cls, v, values):
+        if v is not None and values["data"] is not None:
+            raise ValueError("must not provide both data and error")
+        if v is None and values.get("data") is None:
+            raise ValueError("must provide data or error")
+        return v

@@ -4,7 +4,7 @@ from typing import Any, Optional
 from fastapi import status
 from structlog import get_logger
 
-from app.schemas.response import ErrorResponse
+from app.schemas.response import Error, Response
 
 logger = get_logger()
 
@@ -39,7 +39,9 @@ class CustomException(Exception):
         self.error_code = _CustomExceptionCodes[self.name]
         default_code = f"{CUSTOM_CODE_PREFIX}{self.error_code}"
         self.code = marshalled_code if marshalled_code else default_code
-        self.response = ErrorResponse[dict](code=self.code)
+        self.response = Response[dict](
+            error=Error(code=self.code, message="DEFAULT")
+        )
         self.status_code = status_code
         if message:
             self.response.message = self.message = message

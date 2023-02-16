@@ -1,8 +1,7 @@
 from typing import Optional
 
-from fastapi import status
-
 from base import CustomException
+from fastapi import status
 
 
 class UserAccountServiceException(CustomException):

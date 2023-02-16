@@ -1,7 +1,6 @@
+from base import CustomException
 from fastapi import status
 from structlog import get_logger
-
-from base import CustomException
 
 logger = get_logger()
 

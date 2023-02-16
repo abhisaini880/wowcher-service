@@ -1,8 +1,8 @@
-from datetime import datetime
 import json
-from enum import Enum
-from typing import Optional, Union, Dict
 import re
+from datetime import datetime
+from enum import Enum
+from typing import Dict, Optional, Union
 
 from pydantic import BaseModel, HttpUrl, ValidationError, validator
 

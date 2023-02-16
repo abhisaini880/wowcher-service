@@ -1,20 +1,21 @@
 """ Gateway services """
 
 from datetime import datetime, timedelta
-from passlib.context import CryptContext
+from typing import Union
+
+from fastapi import Depends, status
+from fastapi.exceptions import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from fastapi import status, Depends
-from typing import Union
-from app.DAL.users import UserDAO
-from app.models.user import UserDb
-from app.schemas.gateway import TokenData
-from . import user as UserService
-from fastapi.exceptions import HTTPException
-from app.dependency.db_session import get_user_dal
+from passlib.context import CryptContext
 
 from app.core.config import settings
+from app.DAL.users import UserDAO
+from app.dependency.db_session import get_user_dal
+from app.models.user import UserDb
+from app.schemas.gateway import TokenData
 
+from . import user as UserService
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -142,15 +143,15 @@ async def login_user(payload, user_dal):
     }
 
 
-async def register_user(payload, user_dal):
-
+async def register_user(payload, user_dal, current_user):
+    current_user_id = current_user.get("id")
     # check if already exitss
     user_data = await UserService.get_user(
         email_id=payload.email_id, user_dal=user_dal
     )
 
     if user_data:
-        raise Exception
+        raise Exception("User Already Exists!")
 
     # create password hash
     hashed_pwd = get_password_hash(payload.password)
@@ -160,8 +161,8 @@ async def register_user(payload, user_dal):
         name=payload.name,
         hashed_pwd=hashed_pwd,
         active=True,
-        created_by=settings.SYSTEM_USER_ID,
-        updated_by=settings.SYSTEM_USER_ID,
+        created_by=current_user_id,
+        updated_by=current_user_id,
     )
 
     # call user service method `create_user`
